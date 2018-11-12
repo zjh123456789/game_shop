@@ -1,5 +1,6 @@
 package team.gameshop.service;
 
+import team.gameshop.model.Item;
 import team.gameshop.model.ItemPicture;
 
 import java.util.List;
@@ -45,4 +46,11 @@ public interface ItemPictureService {
      * @return      int
      */
     public int update(ItemPicture itemPicture);
+
+    /**
+     * 查询某一商品的图片
+     * @param:
+     * @return：
+     */
+    public List<ItemPicture> listByItem(Item item);
 }

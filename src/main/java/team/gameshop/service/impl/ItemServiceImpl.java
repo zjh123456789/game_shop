@@ -2,7 +2,9 @@ package team.gameshop.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import team.gameshop.mapper.CategoryMapper;
 import team.gameshop.mapper.ItemMapper;
+import team.gameshop.model.Category;
 import team.gameshop.model.Item;
 import team.gameshop.model.ItemExample;
 import team.gameshop.service.ItemService;
@@ -20,12 +22,17 @@ public class ItemServiceImpl implements ItemService {
 
     @Autowired
     ItemMapper itemMapper;
+    @Autowired
+    CategoryMapper categoryMapper;
 
     @Override
     public List<Item> list() {
         ItemExample example = new ItemExample();
+        example.createCriteria().andDeleteFlagEqualTo(false);
         example.setOrderByClause("id desc");
-        return itemMapper.selectByExample(example);
+        List<Item> items = itemMapper.selectByExample(example);
+        setCategory(items);
+        return items;
     }
 
     @Override
@@ -45,6 +52,11 @@ public class ItemServiceImpl implements ItemService {
         item.setCreateTime(new Date());
         item.setUpdateTime(new Date());
         item.setUpdateUser("admin");
+        item.setDeleteFlag(false);
+        item.setKeyword("刺客");
+        item.setAppraiseNumber(0);
+        item.setIsSale(true);
+        item.setSaleNumber(0);
         itemMapper.insertSelective(item);
         return item.getId();
     }
@@ -54,7 +66,9 @@ public class ItemServiceImpl implements ItemService {
         if (null == id){
             return 0;
         }
-        itemMapper.deleteByPrimaryKey(id);
+        Item item = itemMapper.selectByPrimaryKey(id);
+        item.setDeleteFlag(true);
+        itemMapper.updateByPrimaryKeySelective(item);
         return id;
     }
 
@@ -65,5 +79,16 @@ public class ItemServiceImpl implements ItemService {
         }
         itemMapper.updateByPrimaryKeySelective(item);
         return item.getId();
+    }
+
+    public void setCategory(Item item){
+        Category category = categoryMapper.selectByPrimaryKey(item.getCategoryId());
+        item.setCategory(category);
+    }
+
+    public void setCategory(List<Item> items){
+        for (Item item : items){
+            setCategory(item);
+        }
     }
 }

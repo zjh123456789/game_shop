@@ -56,11 +56,6 @@
             form.itemDescription.focus();
             return false;
         }
-        if (form.originalHeroId.value==''){
-            alert("原始英雄ID不能为空!");
-            form.originalHeroId.focus();
-            return false;
-        }
         return true;
     }
 </script>
@@ -76,11 +71,9 @@
                 <td>商品类型</td>
                 <td> <select name="categoryId" id="categoryId">
                         <option>-请选择类别-</option>
-                        <option>英雄</option>
-                        <option>皮肤</option>
-                        <option>道具</option>
-                        <option>守卫眼皮肤</option>
-                        <option>道具包</option>
+                        <c:forEach items="${categories}" var="category">
+                            <option value="${category.id}">${category.categoryName}</option>
+                        </c:forEach>
                      </select>
                 </td>
             </tr>
@@ -134,6 +127,7 @@
             <th>商品描述</th>
             <th>编辑</th>
             <th>下架商品</th>
+            <th>图片管理</th>
         </tr>
         </thead>
         <tbody>
@@ -152,6 +146,7 @@
                 <td>${item.itemDescription}</td>
                 <td><a href="editItem?id=${item.id}">编辑</a></td>
                 <td><a href="deleteItem?id=${item.id}">下架商品</a></td>
+                <td><a href="/itemPicture/list?id=${item.id}">图片管理</a></td>
             </tr>
         </c:forEach>
         </tbody>

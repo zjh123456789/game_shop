@@ -3,6 +3,7 @@ package team.gameshop.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import team.gameshop.mapper.ItemPictureMapper;
+import team.gameshop.model.Item;
 import team.gameshop.model.ItemPicture;
 import team.gameshop.model.ItemPictureExample;
 import team.gameshop.service.ItemPictureService;
@@ -60,5 +61,17 @@ public class ItemPictureServiceImpl implements ItemPictureService {
         }
         itemPictureMapper.updateByPrimaryKeySelective(itemPicture);
         return itemPicture.getId();
+    }
+
+    @Override
+    public List<ItemPicture> listByItem(Item item) {
+        if (null == item){
+            return null;
+        }
+        ItemPictureExample example = new ItemPictureExample();
+        example.createCriteria().andItemIdEqualTo(item.getId());
+        example.setOrderByClause("id desc");
+        List<ItemPicture> itemPictures = itemPictureMapper.selectByExample(example);
+        return itemPictures;
     }
 }
