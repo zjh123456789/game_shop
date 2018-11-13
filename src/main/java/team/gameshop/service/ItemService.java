@@ -46,4 +46,45 @@ public interface ItemService {
      */
     public int update(Item item);
 
+    /**
+     * 设置商品展示图片
+     * @param           item
+     * @return          void
+     */
+    public void setShowItemImage(Item item);
+
+    /**
+     *  根据分类ID查询商品
+     * @param       categoryId
+     * @return      List<Item>
+     */
+    public List<Item> listByCategory(Integer categoryId);
+
+    /**
+     * 按关键字搜索商品
+     * @param       name
+     * @return      List<Item>
+     */
+    public List<Item> listByKeyWord(String name);
+
+    /**
+     * 搜索英雄对应的全部皮肤
+     * @param       id
+     * @return      List<Item>
+     */
+    public List<Item> listSkinByHero(Integer id);
+
+    /**
+     * 按销量查询商品
+     * @param
+     * @return
+     */
+    public List<Item> listItemBySaleNumber();
+
+    /**
+     * 查询最新商品
+     * @param
+     * @return
+     */
+    public List<Item> listItemByNewDate();
 }

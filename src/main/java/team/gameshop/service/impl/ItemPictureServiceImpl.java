@@ -8,6 +8,7 @@ import team.gameshop.model.ItemPicture;
 import team.gameshop.model.ItemPictureExample;
 import team.gameshop.service.ItemPictureService;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -22,8 +23,9 @@ public class ItemPictureServiceImpl implements ItemPictureService {
     ItemPictureMapper itemPictureMapper;
 
     @Override
-    public List<ItemPicture> list() {
+    public List<ItemPicture> list(Integer itemId) {
         ItemPictureExample example = new ItemPictureExample();
+        example.createCriteria().andItemIdEqualTo(itemId);
         example.setOrderByClause("id desc");
         return itemPictureMapper.selectByExample(example);
     }
@@ -41,6 +43,12 @@ public class ItemPictureServiceImpl implements ItemPictureService {
         if (null == itemPicture){
             return 0;
         }
+        itemPicture.setImagePath("admin");
+        itemPicture.setCreateTime(new Date());
+        itemPicture.setCreateUser("admin");
+        itemPicture.setUpdateTime(new Date());
+        itemPicture.setUpdateUser("admin");
+        itemPicture.setDeleteFlag(false);
         itemPictureMapper.insertSelective(itemPicture);
         return itemPicture.getId();
     }
@@ -61,17 +69,5 @@ public class ItemPictureServiceImpl implements ItemPictureService {
         }
         itemPictureMapper.updateByPrimaryKeySelective(itemPicture);
         return itemPicture.getId();
-    }
-
-    @Override
-    public List<ItemPicture> listByItem(Item item) {
-        if (null == item){
-            return null;
-        }
-        ItemPictureExample example = new ItemPictureExample();
-        example.createCriteria().andItemIdEqualTo(item.getId());
-        example.setOrderByClause("id desc");
-        List<ItemPicture> itemPictures = itemPictureMapper.selectByExample(example);
-        return itemPictures;
     }
 }

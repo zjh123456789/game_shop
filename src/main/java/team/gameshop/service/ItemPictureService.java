@@ -1,6 +1,5 @@
 package team.gameshop.service;
 
-import team.gameshop.model.Item;
 import team.gameshop.model.ItemPicture;
 
 import java.util.List;
@@ -13,11 +12,11 @@ import java.util.List;
 public interface ItemPictureService {
 
     /**
-     * 查找所有商品图片
-     * @param
+     * 根据商品查找对应图片
+     * @param       itemId
      * @return      List<ItemPicture>
      */
-    public List<ItemPicture> list();
+    public List<ItemPicture> list(Integer itemId);
 
     /**
      * 根据id 查找商品图片
@@ -47,10 +46,4 @@ public interface ItemPictureService {
      */
     public int update(ItemPicture itemPicture);
 
-    /**
-     * 查询某一商品的图片
-     * @param:
-     * @return：
-     */
-    public List<ItemPicture> listByItem(Item item);
 }

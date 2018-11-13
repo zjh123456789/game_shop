@@ -9,6 +9,7 @@ import team.gameshop.model.Item;
 import team.gameshop.service.CategoryService;
 import team.gameshop.service.ItemService;
 
+import javax.servlet.http.HttpSession;
 import java.util.Date;
 import java.util.List;
 
@@ -27,8 +28,9 @@ public class ItemController {
     CategoryService categoryService;
 
     @RequestMapping("list")
-    public String list(Model model){
+    public String list(Model model, HttpSession session){
         List<Item> items = itemService.list();
+        session.setAttribute("admin","admin");
         List<Category> categories = categoryService.list();
         model.addAttribute("items",items);
         model.addAttribute("categories",categories);

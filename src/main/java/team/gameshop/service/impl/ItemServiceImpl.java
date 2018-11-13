@@ -7,6 +7,8 @@ import team.gameshop.mapper.ItemMapper;
 import team.gameshop.model.Category;
 import team.gameshop.model.Item;
 import team.gameshop.model.ItemExample;
+import team.gameshop.model.ItemPicture;
+import team.gameshop.service.ItemPictureService;
 import team.gameshop.service.ItemService;
 
 import java.util.Date;
@@ -24,6 +26,8 @@ public class ItemServiceImpl implements ItemService {
     ItemMapper itemMapper;
     @Autowired
     CategoryMapper categoryMapper;
+    @Autowired
+    ItemPictureService itemPictureService;
 
     @Override
     public List<Item> list() {
@@ -31,6 +35,7 @@ public class ItemServiceImpl implements ItemService {
         example.createCriteria().andDeleteFlagEqualTo(false);
         example.setOrderByClause("id desc");
         List<Item> items = itemMapper.selectByExample(example);
+        setShowItemImage(items);
         setCategory(items);
         return items;
     }
@@ -40,7 +45,10 @@ public class ItemServiceImpl implements ItemService {
         if (null == id){
             return null;
         }
-        return itemMapper.selectByPrimaryKey(id);
+        Item item = itemMapper.selectByPrimaryKey(id);
+        setShowItemImage(item);
+        setCategory(item);
+        return item;
     }
 
     @Override
@@ -79,6 +87,57 @@ public class ItemServiceImpl implements ItemService {
         }
         itemMapper.updateByPrimaryKeySelective(item);
         return item.getId();
+    }
+
+    @Override
+    public void setShowItemImage(Item item) {
+        List<ItemPicture> itemPictures = itemPictureService.list(item.getId());
+        if (!itemPictures.isEmpty()){
+            ItemPicture itemPicture = itemPictures.get(0);
+            item.setShowPicture(itemPicture);
+        }
+    }
+
+    @Override
+    public List<Item> listByCategory(Integer categoryId) {
+        ItemExample example = new ItemExample();
+        example.createCriteria().andCategoryIdEqualTo(categoryId);
+        example.setOrderByClause("id desc");
+        return itemMapper.selectByExample(example);
+    }
+
+    @Override
+    public List<Item> listByKeyWord(String name) {
+        ItemExample example = new ItemExample();
+        example.createCriteria().andKeywordLike("%" + name + "%");
+        return itemMapper.selectByExample(example);
+    }
+
+    @Override
+    public List<Item> listSkinByHero(Integer id) {
+        ItemExample example = new ItemExample();
+        example.createCriteria().andOriginalHeroIdEqualTo(id);
+        return itemMapper.selectByExample(example);
+    }
+
+    @Override
+    public List<Item> listItemBySaleNumber() {
+        ItemExample example = new ItemExample();
+        example.setOrderByClause("sale_number desc");
+        return itemMapper.selectByExample(example);
+    }
+
+    @Override
+    public List<Item> listItemByNewDate() {
+        ItemExample example = new ItemExample();
+        example.setOrderByClause("create_time desc");
+        return itemMapper.selectByExample(example);
+    }
+
+    public void setShowItemImage(List<Item> items){
+        for (Item item : items){
+            setShowItemImage(item);
+        }
     }
 
     public void setCategory(Item item){

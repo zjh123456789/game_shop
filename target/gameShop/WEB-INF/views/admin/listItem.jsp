@@ -117,6 +117,7 @@
             <th>ID</th>
             <th>所属类别</th>
             <th>商品名称</th>
+            <th>图片</th>
             <th>原价</th>
             <th>现价</th>
             <th>库存</th>
@@ -136,6 +137,12 @@
                 <td>${item.id}</td>
                 <td>${item.category.categoryName}</td>
                 <td>${item.itemName}</td>
+                <c:if test="${empty item.showPicture}">
+                    <td>未添加图片</td>
+                </c:if>
+                <c:if test="${!empty item.showPicture}">
+                    <td><a href="/images/item/${item.showPicture.id}.jpg"><img height="50px" src="/images/item/${item.showPicture.id}.jpg" /></a></td>
+                </c:if>
                 <td>${item.originalPrice}</td>
                 <td>${item.currentPrice}</td>
                 <td>${item.stock}</td>
@@ -143,10 +150,10 @@
                 <td>${item.createTime}</td>
                 <td>${item.updateUser}</td>
                 <td>${item.updateTime}</td>
-                <td>${item.itemDescription}</td>
+                <td style="width: 50px">${item.itemDescription}</td>
                 <td><a href="editItem?id=${item.id}">编辑</a></td>
                 <td><a href="deleteItem?id=${item.id}">下架商品</a></td>
-                <td><a href="/itemPicture/list?id=${item.id}">图片管理</a></td>
+                <td><a href="/itemPicture/list?itemId=${item.id}">图片管理</a></td>
             </tr>
         </c:forEach>
         </tbody>

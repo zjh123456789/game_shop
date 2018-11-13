@@ -50,4 +50,44 @@ public class TestInterface {
         }
     }
 
+    @Test
+    public void listItemByCategory(){
+        List<Item> items = itemService.listByCategory(2);
+        for (Item item : items){
+            System.out.println(item.getItemDescription());
+        }
+    }
+
+    @Test
+    public void listItemByKeyWord(){
+        List<Item> items = itemService.listByKeyWord("刺");
+        for (Item item : items){
+            System.out.println(item.getItemDescription());
+        }
+    }
+
+    @Test
+    public void listSkinByHero(){
+        List<Item> items = itemService.listSkinByHero(1);
+        for (Item item : items){
+            System.out.println(item.getItemDescription());
+        }
+    }
+
+    @Test
+    public void listItemBySaleNumber() {
+        List<Item> items = itemService.listItemBySaleNumber();
+        for (Item item : items){
+            System.out.println(item.getItemDescription());
+        }
+    }
+
+    @Test
+    public void listItemByNewDate(){
+        List<Item> items = itemService.listItemByNewDate();
+        for (Item item : items){
+            System.out.println(item.getItemDescription());
+        }
+    }
+
 }

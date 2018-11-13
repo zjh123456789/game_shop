@@ -100,6 +100,19 @@ public class Item {
      */
     private Category category;
 
+    /**
+     * 展示图片
+     */
+    private ItemPicture showPicture;
+
+    public ItemPicture getShowPicture() {
+        return showPicture;
+    }
+
+    public void setShowPicture(ItemPicture showPicture) {
+        this.showPicture = showPicture;
+    }
+
     public Boolean getSale() {
         return isSale;
     }
